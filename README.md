@@ -46,7 +46,7 @@ We will now walk through the steps for setting up a Continuous Integration, Cont
 We are going to create an environment from which demos of the Docker CICD use case along with using DTR and UCP can be done. Jenkins will run as a container and handle the building of Docker images.
 ![Alt text](https://github.com/harishjayakumar/Azure-DDC-CICD/blob/master/CI-CD.png?raw=true "CI/CD Architecture")
 
-# Setting up Jenkins
+# Step 1: Setting up Jenkins
 SSH to one of the worker nodes in the cluster and deploy Jenkins as a container
 
 ## SSH to worker node
@@ -66,3 +66,6 @@ docker run -d --restart=always -p 8080 --name jenkins \
 -v ucp-node-certs:/etc/docker:ro \
 dockersolutions/jenkins
 ```
+Launch your browser with the <ip-workernode-lb> :8080. You should see the Jenkins screen with a login and password page
+Use credentials (u) demo and (p) docker123 to login.
+
