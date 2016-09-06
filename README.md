@@ -1,7 +1,7 @@
 # Azure-DDC-CICD
-Setting up a CI/CD pipeline using Jenkins with Docker Datacenter for Azure 
+Setting up a CI/CD pipeline using Jenkins with Docker Datacenter for Azure
 
-#DOCKER DATA CENTER:
+# DOCKER DATA CENTER:
 
 Docker Datacenter is an integrated solution including open source and commercial software, the integrations between them, full Docker API support, validated configurations and commercial support for your Docker Datacenter environment. A pluggable architecture allows flexibility in compute, networking and storage providers used in your CaaS infrastructure without disrupting the application code. Enterprises can leverage existing technology investments with Docker Datacenter. The open APIs allow Docker Datacenter CaaS to easily integrate into your existing systems like LDAP/AD, monitoring, logging and more.
 
@@ -11,21 +11,21 @@ You can find more information here: https://www.docker.com/products/docker-datac
 
 Docker Data Center consists for 3 components:
 
-#Docker Univeral Control Plane (UCP):
+# Docker Univeral Control Plane (UCP):
 UCP is an enterprise-grade cluster management solution from Docker that helps you manage your cluster using a single plane of glass. It is architected on top of swarm that comes with Docker engine. The UCP cluster consists of controllers ( masters) and nodes (workers).
 
 # Docker Trusted Registry (DTR):
 DTR is the enterprise-grade image storage solution from Docker that helps you can securely store and manage the Docker images you use in your applications. DTR is made of DTR replicas only that are deployed on UCP nodes.
 
-#Commercially Supported Engine (CS Engine):
+# Commercially Supported Engine (CS Engine):
 The CS engine adds support to the existing Docker engine. This becomes very useful when patches and fixes will have to be backported to engines running in production instead of updating the entire engine.
 
-#DDC for Azure
+# DDC for Azure
 Setting up DDC for Azure is very simple. A simple search for "Docker DataCenter" in the Azure marketplace will bring the template that will guide you through the process of setting it up. After a simple few clicks you can have DDC up and running in approximately 30 min. Please see here for detailed instructions on setting it up : https://success.docker.com/Datacenter/Apply/Docker_Datacenter_on_Azure
 
-Thanks to @uday-shetty for the above writeup on setting up DDC for Azure.
+Thanks to @[uday-shetty](https://github.com/uday-shetty) for the above writeup on setting up DDC for Azure.
 
-Once you have DDC for Azure set up, you will have a cluster with UCP and DTR in High Availablity mode. 
+Once you have DDC for Azure set up, you will have a cluster with UCP and DTR in High Availablity mode.
 
 # DDC for Azure Architecture
 
@@ -38,7 +38,7 @@ As of this writing the Docker Datacenter on Azure Marketplace (template version 
 3. Docker Trusted Registry 2.0.2
 4. Docker CS Engine 1.11.2-cs3
 
-#Continuous Integration and Continuous Deployment 
+# Continuous Integration and Continuous Deployment
 
 We will now walk through the steps for setting up a Continuous Integration, Continuous Deployment workflow using Jenkins and DDC. It is important you have DDC installed and running for this. If you don't go back up , follow the instructions and make sure you have DDC up and running before proceeding.
 
@@ -46,26 +46,37 @@ We will now walk through the steps for setting up a Continuous Integration, Cont
 We are going to create an environment from which demos of the Docker CICD use case along with using DTR and UCP can be done. Jenkins will run as a container and handle the building of Docker images.
 ![Alt text](https://github.com/harishjayakumar/Azure-DDC-CICD/blob/master/CI-CD.png?raw=true "CI/CD Architecture")
 
-# Step 1: Setting up Jenkins
-SSH to one of the worker nodes in the cluster and deploy Jenkins as a container
+# Step 1: Set up a wildcard DNS entry for applications
+In order to deploy applications (including Jenkins) using the methods specified in the DDC reference architecture with Interlock, a wildcard DNS entry should be created to facilitate the easy of deploying applications.  Typically this should be a subdomain like `*.demo.example.com` where the DNS entry is a CNAME to the `ucplb` that was configured by the ARM template.  For example, `test.demo.example.com.  3600    IN      CNAME   harish2ucplb.eastus.cloudapp.azure.com.`.  Otherwise, individual DNS entries will need to be created for your application or your system's `hosts` file will need to be modified to fake DNS.
 
-## SSH to worker node
-ssh ucpadmin@ <ip-workernode-lb> -p 2200
+# Step 2: Setting up Jenkins
+Using a client bundle from UCP, run Jenkins as a container.
 
 ## Run Jenkins as a Container:
+Many of the parameters in the `docker run` command need to be updated for your specific environment.
+
+ * `interlock.hostname` - hostname Jenkins will be available at (e.g. - `jenkins`)
+ * `interlock.domain` - domain name Jenkins will be available at (e.g. - `demo.example.com`)
+ * `constraint:node` - UCP node name to run Jenkins on; must be a UCP controller (e.g. - `harish20-ucpctrl`); can be found in the UCP `Nodes` UI
+ * `DTR_URL` - FQDN to DTR (e.g. - harish2dtrlb.eastus.cloudapp.azure.com)
+ * `DEMO_MASTER` - private IP address of the UCP controller you're running Jenkins on; can be found in the UCP `Nodes` UI
+ * `DOMAIN_NAME` - domain name where a wildcard DNS entry has been added (e.g. - `demo.example.com`)
+ * `GITHUB_USERNAME` - GitHub username where `https://github.com/harishjayakumar/Week2-PythonComposeSwarm-project` has been forked (e.g. - `harishjayakumar`)
+
+Example:
 
 ```
 docker run -d --restart=always -p 8080 --name jenkins \
--l interlock.hostname=harish2ucplb \
--l interlock.domain=eastus.cloudapp.azure.com \
--e constraint:node==harish20-ucpctrl \
--e DTR_URL=harish2dtrlb.eastus.cloudapp.azure.com \
--e DEMO_MASTER=10.0.0.4 \
--e DOMAIN_NAME=harish2ucplb.eastus.cloudapp.azure.com \
--e GITHUB_USERNAME=mbentley \
--v ucp-node-certs:/etc/docker:ro \
-dockersolutions/jenkins
+  -l interlock.hostname=jenkins \
+  -l interlock.domain=demo.example.com \
+  -e constraint:node==harish20-ucpctrl \
+  -e DTR_URL=harish2dtrlb.eastus.cloudapp.azure.com \
+  -e DEMO_MASTER=10.0.0.4 \
+  -e DOMAIN_NAME=demo.example.com \
+  -e GITHUB_USERNAME=harishjayakumar \
+  -v ucp-node-certs:/etc/docker:ro \
+  -v jenkins-data:/var/lib/jenkins \
+  dockersolutions/jenkins:latest
 ```
-Launch your browser with the <ip-workernode-lb> :8080. You should see the Jenkins screen with a login and password page
+Launch your browser with FQDN to Jenkins specified by `interlock.hostname` and `interlock.domain` (e.g. - http://jenkins.demo.example.com). You should see the Jenkins screen with a login and password page
 Use credentials (u) demo and (p) docker123 to login.
-
