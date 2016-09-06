@@ -43,9 +43,26 @@ As of this writing the Docker Datacenter on Azure Marketplace (template version 
 We will now walk through the steps for setting up a Continuous Integration, Continuous Deployment workflow using Jenkins and DDC. It is important you have DDC installed and running for this. If you don't go back up , follow the instructions and make sure you have DDC up and running before proceeding.
 
 # CI/CD Architecture
-We are going to be setting up Jenkins and DDC. Jenkins will run as a container and handle the building of Docker images.
+We are going to create an environment from which demos of the Docker CICD use case along with using DTR and UCP can be done. Jenkins will run as a container and handle the building of Docker images.
 ![Alt text](https://github.com/harishjayakumar/Azure-DDC-CICD/blob/master/CI-CD.png?raw=true "CI/CD Architecture")
 
+# Setting up Jenkins
+SSH to one of the worker nodes in the cluster and deploy Jenkins as a container
 
+## SSH to worker node
+ssh ucpadmin@ <ip-workernode-lb> -p 2200
 
+## Run Jenkins as a Container:
 
+```
+docker run -d --restart=always -p 8080 --name jenkins \
+-l interlock.hostname=harish2ucplb \
+-l interlock.domain=eastus.cloudapp.azure.com \
+-e constraint:node==harish20-ucpctrl \
+-e DTR_URL=harish2dtrlb.eastus.cloudapp.azure.com \
+-e DEMO_MASTER=10.0.0.4 \
+-e DOMAIN_NAME=harish2ucplb.eastus.cloudapp.azure.com \
+-e GITHUB_USERNAME=mbentley \
+-v ucp-node-certs:/etc/docker:ro \
+dockersolutions/jenkins
+```
