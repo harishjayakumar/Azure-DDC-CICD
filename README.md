@@ -7,5 +7,7 @@ Docker Datacenter is an integrated solution including open source and commercial
 
 You can find more information here: https://www.docker.com/products/docker-datacenter
 
+![Alt text](https://github.com/harishjayakumar/Azure-DDC-CICD/blob/master/DDC-Arch.png?raw=true "Optional Title")
+
 
 
