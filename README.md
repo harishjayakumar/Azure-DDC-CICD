@@ -23,12 +23,25 @@ The CS engine adds support to the existing Docker engine. This becomes very usef
 #DDC for Azure
 Setting up DDC for Azure is very simple. A simple search for "Docker DataCenter" in the Azure marketplace will bring the template that will guide you through the process of setting it up. After a simple few clicks you can have DDC up and running in approximately 30 min. Please see here for detailed instructions on setting it up : https://success.docker.com/Datacenter/Apply/Docker_Datacenter_on_Azure
 
+Thanks to @uday-shetty for the above writeup on setting up DDC for Azure.
+
 Once you have DDC for Azure set up, you will have a cluster with UCP and DTR in High Availablity mode. 
 
 # DDC for Azure Architecture
 
 ![Alt text](https://github.com/harishjayakumar/Azure-DDC-CICD/blob/master/DDC-Azure-Arch.png?raw=true "DDC Azure Architecture ")
 
+As of this writing the Docker Datacenter on Azure Marketplace (template version 1.0.7) is based on the following stack:
 
+1. Ubuntu 14.04.4 LTS
+2. Docker UCP 1.1.2
+3. Docker Trusted Registry 2.0.2
+4. Docker CS Engine 1.11.2-cs3
 
+#Continuous Integration and Continuous Deployment 
+
+We will now walk through the steps for setting up a Continuous Integration, Continuous Deployment workflow using Jenkins and DDC. It is important you have DDC installed and running for this. If you don't go back up , follow the instructions and make sure you have DDC up and running before proceeding.
+
+# CI/CD Architecture
+We are going to be setting up Jenkins and DDC. Jenkins will run as a container and handle the building of Docker images. Once you set it up , this is the architecture you will have:
 
