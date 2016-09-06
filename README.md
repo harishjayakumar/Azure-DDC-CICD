@@ -43,5 +43,9 @@ As of this writing the Docker Datacenter on Azure Marketplace (template version 
 We will now walk through the steps for setting up a Continuous Integration, Continuous Deployment workflow using Jenkins and DDC. It is important you have DDC installed and running for this. If you don't go back up , follow the instructions and make sure you have DDC up and running before proceeding.
 
 # CI/CD Architecture
-We are going to be setting up Jenkins and DDC. Jenkins will run as a container and handle the building of Docker images. Once you set it up , this is the architecture you will have:
+We are going to be setting up Jenkins and DDC. Jenkins will run as a container and handle the building of Docker images.
+![Alt text](https://github.com/harishjayakumar/Azure-DDC-CICD/blob/master/CI-CD.png?raw=true "CI/CD Architecture")
+
+
+
 
