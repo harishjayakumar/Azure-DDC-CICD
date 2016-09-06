@@ -27,5 +27,8 @@ Once you have DDC for Azure set up, you will have a cluster with UCP and DTR in 
 
 # DDC for Azure Architecture
 
+![Alt text](https://github.com/harishjayakumar/Azure-DDC-CICD/blob/master/DDC-Azure-Arch.png?raw=true "DDC Azure Architecture ")
+
+
 
 
