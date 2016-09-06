@@ -7,7 +7,17 @@ Docker Datacenter is an integrated solution including open source and commercial
 
 You can find more information here: https://www.docker.com/products/docker-datacenter
 
-![Alt text](https://github.com/harishjayakumar/Azure-DDC-CICD/blob/master/DDC-Arch.png?raw=true "Optional Title")
+![Alt text](https://github.com/harishjayakumar/Azure-DDC-CICD/blob/master/DDC-Arch.png?raw=true "DDC Components")
 
+Docker Data Center consists for 3 components:
+
+#Docker Univeral Control Plane (UCP):
+UCP is an enterprise-grade cluster management solution from Docker that helps you manage your cluster using a single plane of glass. It is architected on top of swarm that comes with Docker engine. The UCP cluster consists of controllers ( masters) and nodes (workers).
+
+# Docker Trusted Registry (DTR):
+DTR is the enterprise-grade image storage solution from Docker that helps you can securely store and manage the Docker images you use in your applications. DTR is made of DTR replicas only that are deployed on UCP nodes.
+
+#Commercially Supported Engine (CS Engine):
+The CS engine adds support to the existing Docker engine. This becomes very useful when patches and fixes will have to be backported to engines running in production instead of updating the entire engine.
 
 
