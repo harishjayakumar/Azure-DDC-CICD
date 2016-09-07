@@ -120,5 +120,10 @@ From your repository in Github.. Click on Settings -> Webhooks and Services -> A
 
 ![Alt text](https://github.com/harishjayakumar/Azure-DDC-CICD/blob/master/Github-Set.png?raw=true "Github Setup")
 
+Click on the Jenkins plugin and enter the Jenkins URL as suggested in the example. For my case I have this
+```http://github:roflmywaffles@jenkins.demo.dckrindy.io/github-webhook/ ```
+
+You will have something like  ```http://github:roflmywaffles@yourjenkinsdemo/github-webhook/ ```
+
 
 
