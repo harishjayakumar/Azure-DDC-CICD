@@ -92,6 +92,8 @@ UCP-Controller -2``` ssh ucpadmin@<<clbpip ip-address>> -p 2201```
 
 UCP-Controller -3``` ssh ucpadmin@<<clbpip ip-address>> -p 2202```
 
+## Copy Certificates
+
 As seen above we just use the clb's (UCP Controller load balancer) ip address and change the port ids to ssh into the individual nodes. Once you are in use the following commands for DTR to trust the nodes:
 
 ```$ export DOMAIN_NAME=dtr.yourdomain.com```
