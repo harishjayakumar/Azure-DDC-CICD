@@ -118,5 +118,7 @@ Next, We want to make sure we set up your Github repository to trigger a jenkins
 
 From your repository in Github.. Click on Settings -> Webhooks and Services -> Add Service and search for "Jenkins github" plugin and add it
 
+![Alt text](https://github.com/harishjayakumar/Azure-DDC-CICD/blob/master/Github-Set.png?raw=true "Github Setup")
+
 
 
