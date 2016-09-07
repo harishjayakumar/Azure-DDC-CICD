@@ -80,3 +80,6 @@ docker run -d --restart=always -p 8080 --name jenkins \
 ```
 Launch your browser with FQDN to Jenkins specified by `interlock.hostname` and `interlock.domain` (e.g. - http://jenkins.demo.example.com). You should see the Jenkins screen with a login and password page
 Use credentials (u) demo and (p) docker123 to login.
+
+# Step 3: Ensure nodes trust DTR
+In order to be able to pull/push between the cluster nodes and DTR we have to ensure that DTR trusts those nodes. 
