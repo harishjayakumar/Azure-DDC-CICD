@@ -83,3 +83,31 @@ Use credentials (u) demo and (p) docker123 to login.
 
 # Step 3: Ensure nodes trust DTR
 In order to be able to pull/push between the cluster nodes and DTR we have to ensure that DTR trusts those nodes. 
+
+## SSH to UCP-Controller nodes
+
+UCP-Controller -1``` ssh ucpadmin@<<clbpip ip-address>> -p 2200```
+
+UCP-Controller -2``` ssh ucpadmin@<<clbpip ip-address>> -p 2201```
+
+UCP-Controller -3``` ssh ucpadmin@<<clbpip ip-address>> -p 2202```
+
+As seen above we just use the clb's (UCP Controller load balancer) ip address and change the port ids to ssh into the individual nodes. Once you are in use the following commands for DTR to trust the nodes:
+
+```$ export DOMAIN_NAME=dtr.yourdomain.com```
+
+Replace dtr.yourdomain.com with the DNS name of dlbip ( DTR load balancer)
+
+```$ openssl s_client -connect $DOMAIN_NAME:443 -showcerts </dev/null 2>/dev/null | openssl x509 -outform PEM | sudo tee /usr/local/share/ca-certificates/$DOMAIN_NAME.crt```
+
+```$ sudo update-ca-certificates```
+    
+```$ sudo service docker restart```
+
+Repeat the steps above to SSH and trust the DTR for the DTR nodes and the worker nodes.
+
+DTR nodes : ``` ssh ucpadmin@<<dlbpip ip-address>> -p 2200``` , 2201 and 2202 ports
+
+Worker nodes: ``` ssh ucpadmin@<<nlbpip ip-address>> -p 2200```, 2201 
+
+
