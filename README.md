@@ -114,4 +114,9 @@ Worker nodes: ``` ssh ucpadmin@<<nlbpip ip-address>> -p 2200```, 2201
 
 # Step 4: Setting up Github
 
+Next, We want to make sure we set up your Github repository to trigger a jenkins build when a change is committed. 
+
+From your repository in Github.. Click on Settings -> Webhooks and Services -> Add Service and search for "Jenkins github" plugin and add it
+
+
 
